@@ -2,33 +2,33 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './src/index.js', // Your main JS file
+  entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.[contenthash].js',
-    clean: true, // Cleans the dist folder before each build
-    assetModuleFilename: 'assets/[hash][ext][query]' // For images
+    clean: true,
+    assetModuleFilename: 'assets/[name][ext]' // Optional: keeps original names
   },
-  mode: 'development', // Change to 'production' for optimized build
+  // mode: 'development', ← leave this out if you're setting it via CLI
   module: {
     rules: [
       {
         test: /\.html$/,
-        use: ['html-loader'] // Handles HTML imports (e.g. <img src=...>)
+        use: ['html-loader']
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'] // CSS into JS and injects to DOM
+        use: ['style-loader', 'css-loader']
       },
       {
         test: /\.(png|jpe?g|gif|svg)$/i,
-        type: 'asset/resource' // Asset Modules for images
+        type: 'asset/resource'
       },
       {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader', // Optional: For ES6+ support
+          loader: 'babel-loader',
           options: {
             presets: ['@babel/preset-env']
           }
@@ -38,24 +38,24 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/index.html', // Your base HTML file
+      template: './src/index.html',
       filename: 'index.html'
     })
   ],
   devServer: {
     static: {
-      directory: path.join(__dirname, 'dist'),
+      directory: path.join(__dirname, 'dist')
     },
     port: 8080,
     open: true,
     hot: true,
     compress: true
   },
-  devtool: 'source-map' // Optional: Helps with debugging
+  devtool: 'source-map'
 };
 
-// npm install
-// npm install --save-dev webpack webpack-cli webpack-dev-server \
-// html-webpack-plugin html-loader css-loader style-loader \
-// @babel/core @babel/preset-env babel-loader
+
+/* npm install --save-dev webpack webpack-cli webpack-dev-server \
+html-webpack-plugin html-loader css-loader style-loader \
+@babel/core @babel/preset-env babel-loader */
 
